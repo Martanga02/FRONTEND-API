@@ -1,0 +1,11 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        # Ajustá esto si tu backend no está en localhost:8081. Recordá que
+        # es un ARG de build (ver Dockerfile) — si lo cambiás hay que
+        # rebuildear la imagen, no alcanza con reiniciar el contenedor.
+        VITE_API_BASE_URL: http://localhost:8081/tp_parte3/api
+    ports:
+      - "5173:80"

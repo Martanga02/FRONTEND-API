@@ -1,0 +1,262 @@
+:root {
+  --bg: #12100e;
+  --bg-raised: #1c1917;
+  --line: #332e29;
+  --gold: #e0a94f;
+  --gold-dim: #a97f3b;
+  --text: #f3ede2;
+  --text-dim: #a89e8f;
+  --danger: #d96a5a;
+  --ok: #7fae83;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Work Sans", system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Bebas Neue", "Work Sans", sans-serif;
+  letter-spacing: 0.03em;
+  font-weight: 400;
+  margin: 0 0 0.4em;
+}
+
+h1 {
+  font-size: 2.4rem;
+}
+h2 {
+  font-size: 1.7rem;
+  color: var(--gold);
+}
+
+a {
+  color: var(--gold);
+}
+
+.shell {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.5rem;
+}
+
+.topbar-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.brand span {
+  color: var(--text);
+}
+
+nav.links {
+  display: flex;
+  gap: 1.4rem;
+  align-items: center;
+}
+
+nav.links a,
+nav.links button {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+nav.links a.active,
+nav.links a:hover,
+nav.links button:hover {
+  color: var(--gold);
+}
+
+.user-pill {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  border: 1px solid var(--line);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+
+.card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.list-item h3 {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 0 0 0.2rem;
+}
+
+.meta {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  margin-top: 0.35rem;
+}
+
+.controls-row {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+input,
+select,
+textarea {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 0.55rem 0.7rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 1px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+button.primary {
+  background: var(--gold);
+  color: #1c1300;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+button.primary:hover {
+  background: #eab868;
+}
+
+button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.ghost {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  padding: 0.5rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+button.ghost:hover {
+  color: var(--text);
+  border-color: var(--gold-dim);
+}
+
+.alert {
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.alert.error {
+  background: rgba(217, 106, 90, 0.12);
+  border: 1px solid var(--danger);
+  color: #f0b3a8;
+}
+
+.alert.ok {
+  background: rgba(127, 174, 131, 0.12);
+  border: 1px solid var(--ok);
+  color: #bfe0c2;
+}
+
+.empty {
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 1.5rem 0;
+}
+
+.login-shell {
+  max-width: 360px;
+  margin: 4rem auto 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
