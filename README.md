@@ -44,6 +44,19 @@ dev`) o en `docker-compose.yml` (para la imagen).
 Usuarios de prueba (seed de `peliculas_db.sql`): `admin` / `admin123` (rol
 ADMIN) y `demo` / `demo123` (rol USER).
 
+## Tests
+
+```bash
+npm install
+npm test
+```
+
+Usa Vitest + Testing Library. Hay tests de `api/client.js` (headers de
+autenticación, query strings, manejo de errores), de `AuthContext`
+(login, logout, token expirado) y de `ProtectedRoute` (redirección a
+`/login`). Se ejecutan automáticamente en GitHub Actions
+(`.github/workflows/ci.yml`).
+
 ## Qué hace cada pantalla
 
 - **Login** (`/login`): manda Basic Auth a `GET /auth/login`, guarda el
