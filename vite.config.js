@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
 // api_router.php ahora manda headers CORS, así que el frontend le habla
@@ -22,5 +22,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+  },
+  // Configuración de los tests (Vitest): simula un navegador con jsdom
+  test: {
+    environment: "jsdom",
+    globals: true,
   },
 });
