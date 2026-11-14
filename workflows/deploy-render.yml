@@ -1,0 +1,64 @@
+name: Deploy Render
+
+# Deploy manual en Render: hace un GET al deploy hook guardado en el secret
+# DEPLOY_URL, pidiéndole que despliegue un tag exacto de la imagen publicada por
+# el workflow "Build". Sirve también para volver atrás: elegí un sha- anterior.
+run-name: Deploy ${{ inputs.tag || format('sha-{0}', github.sha) }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag de la imagen (ej. sha-<commit> o latest). Vacío = sha- del último commit de la rama elegida"
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions: {}
+    # Nunca dos deploys a la vez; si se lanzan dos seguidos, el segundo espera.
+    concurrency:
+      group: deploy-render
+      cancel-in-progress: false
+
+    steps:
+      - name: Resolver el tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          DEFAULT_TAG: sha-${{ github.sha }}
+        run: |
+          TAG="${INPUT_TAG:-$DEFAULT_TAG}"
+          if [[ ! "$TAG" =~ ^[A-Za-z0-9_][A-Za-z0-9._-]{0,127}$ ]]; then
+            echo "::error::Tag inválido: '$TAG'"
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Llamar al deploy hook de Render
+        env:
+          # Los secrets se enmascaran en los logs.
+          HOOK: ${{ secrets.DEPLOY_URL }}
+          DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          : "${HOOK:?DEPLOY_URL vacío: cargá el deploy hook de Render como secret del repo}"
+          : "${DH_USER:?DOCKERHUB_USERNAME vacío: cargalo como secret del repo}"
+
+          IMG="docker.io/${DH_USER,,}/cartelera-frontend:${TAG}"
+          # imgURL va codificada (URL-encoded). Todo lo que no sea el tag tiene que
+          # coincidir con la imagen configurada en el servicio de Render.
+          ENCODED=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$IMG")
+
+          # El hook ya trae ?key=..., por eso se agrega con & (o con ? si no tuviera).
+          SEP='?'; case "$HOOK" in *\?*) SEP='&';; esac
+
+          STATUS=$(curl -sS -o response.txt -w '%{http_code}' "${HOOK}${SEP}imgURL=${ENCODED}")
+          echo "Imagen pedida: $IMG"
+          echo "Status: $STATUS"
+          cat response.txt; echo
+          if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 300 ]; then
+            echo "::error::Render respondió $STATUS"
+            exit 1
+          fi
