@@ -6,8 +6,8 @@ import react from "@vitejs/plugin-react";
 // Esto también deja todo listo para el día que front y back vivan en
 // repos/imágenes separadas: no hay ningún acoplamiento acá, solo una URL.
 //
-// Si en algún momento preferís volver a un proxy de un solo origen en dev,
-// descomentá esto (y quitá VITE_API_BASE_URL del .env para que se use "/api"):
+// Si en algún momento quiero volver a un proxy de un solo origen en dev,
+// descomento esto (y quitá VITE_API_BASE_URL del .env para que se use "/api"):
 //
 // server: {
 //   proxy: {
@@ -27,5 +27,12 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    // Coverage: qué porcentaje del código de src/ ejecutan los tests
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "lcov"],
+      include: ["src/**/*.{js,jsx}"],
+      exclude: ["src/**/*.test.{js,jsx}", "src/main.jsx"],
+    },
   },
 });
